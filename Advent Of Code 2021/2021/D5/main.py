@@ -1,35 +1,31 @@
-lines = open("2021/D5/input.txt").read().rstrip().split("\n")
-values = []
-for line in lines:
-    values.append(line.split("->"))
+import itertools, re
 
-points = [[0] * 1000 for i in range(1000)]
+lines = [list(map(int, l)) for l in re.findall("(\\d+),(\\d+) -> (\\d+),(\\d+)", open("2021/D5/input.txt").read())]
+size = max([p for p in itertools.chain(*lines)]) + 1
+map = [[0] * size for i in range(size)]
 
-# Part One
-for point_pair in values:
-    x1, y1 = point_pair[0].split(",")
-    x2, y2 = point_pair[1].split(",")
-    x1 = int(x1)
-    x2 = int(x2)
-    y1 = int(y1)
-    y2 = int(y2)
-    if x1 == x2:
-        for y in range(y1, y2):
-            points[int(x1)][y] += 1
-    else:
-        for x in range(int(x1), int(x2)):
-            points[x][int(y1)] += 1
-flat = [x for sublist in points for x in sublist]
-print(len(list(filter(lambda x: x > 1, flat))))
-# Part Two
-for point_pair in values:
-    x1, y1 = point_pair[0].split(",")
-    x2, y2 = point_pair[1].split(",")
+sign = lambda x: -1 if x < 0 else (1 if x > 0 else 0)
 
-    x1 = int(x1)
-    x2 = int(x2)
-    y1 = int(y1)
-    y2 = int(y2)
+for l in lines[:]:
+    if not (l[0] == l[2] or l[1] == l[3]):
+        continue
 
-    #slope = (y1 - y2)/(x1 - x2)
-    #intercept = (x1*y2 - x2*y1)/(x1-x2)
+    lines.remove(l)
+
+    for x in range(min(l[0], l[2]), max(l[0], l[2]) + 1):
+        for y in range(min(l[1], l[3]), max(l[1], l[3]) + 1):
+            map[y][x] += 1
+
+# [print(l) for l in map]
+print(len(list(filter(lambda n: n > 1, itertools.chain(*map)))))
+for l in lines:
+    x, y = (l[0], l[1])
+    xi = sign(l[2] - l[0])
+    yi = sign(l[3] - l[1])
+    while x != l[2] + xi:
+        map[y][x] += 1
+        x += xi
+        y += yi
+
+# [print(l) for l in map]
+print(len(list(filter(lambda n: n > 1, itertools.chain(*map)))))
