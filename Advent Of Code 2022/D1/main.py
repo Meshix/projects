@@ -1,3 +1,4 @@
+# part 1
 # get input from input.txt and divide it by empty lines
 
 with open('input.txt') as f:
@@ -13,6 +14,8 @@ for i in range(len(load)):
     load[i] = [int(x) for x in load[i]]
     sums.append(sum(load[i]))
 
-print(sum(sorted(sums)[-3:]))
+print(sorted(sums))
 
 # part 2
+
+print(sum(sorted(sums)[-3:]))
