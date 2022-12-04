@@ -29,10 +29,9 @@ print(priorities)
 
 common_items = []
 for rucksack in range(0, len(rucksacks), 3):
-    common_items.append(set(rucksacks[rucksack]) & set(rucksacks[rucksack+1]) & set(rucksacks[rucksack+2]))
+    common_items.append(list(set(rucksacks[rucksack]) & set(rucksacks[rucksack+1]) & set(rucksacks[rucksack+2])))
 
 # common_items to list
-common_items = [list(item) for item in common_items]
 common_items = [item for sublist in common_items for item in sublist]
 
 priorities = 0
